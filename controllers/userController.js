@@ -5,18 +5,41 @@
   const sendEmail = require("../utils/sendEmail");
   const crypto = require("crypto");
   const cloudinary = require("cloudinary");
+  const validator = require("validator");
+
+
+
 
   // Register a User
-  exports.registerUser = catchAsyncErrors(async (req, res, next) => {
-    try {
-      const { name, email, password } = req.body;
-      let avatarResult = {
-        public_id: "default_avatar",
-        url: "https://res.cloudinary.com/demo/image/upload/v1674042682/samples/people/boy-snow-hoodie.jpg"
-      };
+exports.registerUser = catchAsyncErrors(async (req, res, next) => {
+  try {
+    const { name, email, password } = req.body;
 
-      // If avatar is provided in the request
-      if (req.body.avatar && req.body.avatar !== "") {
+    // Validate required fields
+    if (!name || !email || !password) {
+      return next(new ErrorHander("Please provide all required fields", 400));
+    }
+
+    // Validate email format
+    if (!validator.isEmail(email)) {
+      return next(new ErrorHander("Please enter a valid email address", 400));
+    }
+
+    // Check if user already exists
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return next(new ErrorHander("User already exists with this email", 400));
+    }
+
+    // Set default avatar
+    let avatarResult = {
+      public_id: "default_avatar",
+      url: "https://res.cloudinary.com/demo/image/upload/v1674042682/samples/people/boy-snow-hoodie.jpg"
+    };
+
+    // Only process avatar if it's provided and not empty
+    if (req.body.avatar && req.body.avatar !== "") {
+      try {
         const result = await cloudinary.v2.uploader.upload(req.body.avatar, {
           folder: "avatars",
           width: 150,
@@ -27,21 +50,32 @@
           public_id: result.public_id,
           url: result.secure_url,
         };
+      } catch (uploadError) {
+        console.error('Avatar upload error:', uploadError);
+        // Continue with default avatar if upload fails
       }
-
-      const user = await User.create({
-        name,
-        email,
-        password,
-        avatar: avatarResult,
-      });
-
-      sendToken(user, 201, res);
-    } catch (error) {
-      console.error('Registration error:', error);
-      return next(new ErrorHander(error.message || "Error registering user", 500));
     }
-  });
+
+    // Create user with validated data
+    const user = await User.create({
+      name,
+      email,
+      password,
+      avatar: avatarResult,
+    });
+
+    // Send token response
+    sendToken(user, 201, res);
+  } catch (error) {
+    console.error('Registration error:', error);
+    if (error.name === 'ValidationError') {
+      return next(new ErrorHander(error.message, 400));
+    }
+    return next(new ErrorHander(error.message || "Error registering user", 500));
+  }
+});
+   
+  
 
   // Login User
   exports.loginUser = catchAsyncErrors(async (req, res, next) => {

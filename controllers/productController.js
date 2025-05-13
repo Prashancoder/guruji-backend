@@ -6,33 +6,36 @@
 
   // Create Product -- Admin
   exports.createProduct = catchAsyncErrors(async (req, res, next) => {
-    let images = [];
+    try {
+      let images = [];
 
-    if (typeof req.body.images === "string") {
-      images.push(req.body.images);
-    } else {
-      images = req.body.images;
-    }
+      if (typeof req.body.images === "string") {
+        images.push(req.body.images);
+      } else {
+        images = req.body.images;
+      }
 
-    const imagesLinks = [];
+      const imagesLinks = [];
 
-    for (let i = 0; i < images.length; i++) {
-      // Use default image if Cloudinary is not configured
-      imagesLinks.push({
-        public_id: `product_${Date.now()}_${i}`,
-        url: images[i] || "https://res.cloudinary.com/demo/image/upload/v1674042682/default_product.png"
+      for (let i = 0; i < images.length; i++) {
+        imagesLinks.push({
+          public_id: `product_${Date.now()}_${i}`,
+          url: images[i] || "https://res.cloudinary.com/demo/image/upload/v1674042682/default_product.png"
+        });
+      }
+
+      req.body.images = imagesLinks;
+
+      const product = await Product.create(req.body);
+
+      res.status(201).json({
+        success: true,
+        product,
       });
+    } catch (error) {
+      console.error('Product creation error:', error);
+      return next(new ErrorHander(error.message, 500));
     }
-
-    req.body.images = imagesLinks;
-    req.body.user = req.user.id;
-
-    const product = await Product.create(req.body);
-
-    res.status(201).json({
-      success: true,
-      product,
-    });
   });
 
   // Get All Product
