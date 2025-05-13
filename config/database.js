@@ -1,17 +1,16 @@
-const mongoose = require("mongoose");
-require('dotenv').config(); // Make sure this is at the very top
+const mongoose = require('mongoose');
 
-
-const connectDatabase = () => {
-  mongoose
-    .connect(process.env.DB_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-      useCreateIndex: true,
-    })
-    .then((data) => {
-      console.log(`Mongodb connected with server: ${data.connection.host}`);
-    });
+const connectDatabase = async () => {
+    try {
+        const conn = await mongoose.connect(process.env.MONGODB_URI, {
+            dbName: 'e-commerce2',
+            useNewUrlParser: true
+        });
+        console.log(`MongoDB Connected: ${conn.connection.host}`);
+    } catch (error) {
+        console.error(`Error: ${error.message}`);
+        process.exit(1);
+    }
 };
 
-module.exports = connectDatabase;
+module.exports = connectDatabase; 
