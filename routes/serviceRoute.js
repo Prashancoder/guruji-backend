@@ -15,16 +15,16 @@ router.route("/services").get(getAllServices);
 
 router
   .route("/admin/services")
-  .get(isAuthenticatedUser, authorizeRoles("admin"), getAdminServices);
+  .get(getAdminServices);
 
 router
   .route("/admin/service/new")
-  .post(isAuthenticatedUser, authorizeRoles("admin"), createService);
+  .post(createService);
 
 router
   .route("/admin/service/:id")
-  .put(isAuthenticatedUser, authorizeRoles("admin"), updateService)
-  .delete(isAuthenticatedUser, authorizeRoles("admin"), deleteService);
+  .put(updateService)
+  .delete(deleteService);
 
 router.route("/service/:id").get(getServiceDetails);
 
