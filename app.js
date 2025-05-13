@@ -14,8 +14,10 @@ if (process.env.NODE_ENV !== "PRODUCTION") {
 
 // ✅ Enable CORS for frontend
 app.use(cors({
-  origin: "http://localhost:3000",
-  credentials: true
+  origin: true,           // <- This will reflect the request origin dynamically
+  credentials: true,      // <- Important if you are sending cookies or auth headers
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"]
 }));
 
 app.use(express.json());
