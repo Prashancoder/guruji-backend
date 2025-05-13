@@ -12,10 +12,23 @@ if (process.env.NODE_ENV !== "PRODUCTION") {
   require("dotenv").config({ path: "backend/config/config.env" });
 }
 
+// ✅ Define allowed origins
+const allowedOrigins = [
+  "http://localhost:3000", // Local development
+  "https://guruji-frontend-git-main-prashancoders-projects.vercel.app" // Deployed frontend URL
+];
+
 // ✅ Enable CORS for frontend
 app.use(cors({
-  origin: true,           // <- This will reflect the request origin dynamically
-  credentials: true,      // <- Important if you are sending cookies or auth headers
+  origin: (origin, callback) => {
+    // Allow requests with no origin (like mobile apps or Postman)
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"), false);
+    }
+  },
+  credentials: true, // Allow credentials (cookies, headers, etc.)
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"]
 }));
