@@ -14,6 +14,7 @@ const {
   deleteUser,
 } = require("../controllers/userController");
 
+
 const router = express.Router();
 
 router.route("/register").post(registerUser);
