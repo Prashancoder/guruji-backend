@@ -4,8 +4,10 @@
   const sendToken = require("../utils/jwtToken");
   const sendEmail = require("../utils/sendEmail");
   const crypto = require("crypto");
-  const cloudinary = require("cloudinary");
+  // const cloudinary = require("cloudinary");
   const validator = require("validator");
+  const cloudinary = require("../config/cloudinary"); // 👈 use this path correctly
+
 
 
 
@@ -36,11 +38,10 @@ exports.registerUser = catchAsyncErrors(async (req, res, next) => {
       public_id: "default_avatar",
       url: "https://res.cloudinary.com/demo/image/upload/v1674042682/samples/people/boy-snow-hoodie.jpg"
     };
-
     // Only process avatar if it's provided and not empty
     if (req.body.avatar && req.body.avatar !== "") {
       try {
-        const result = await cloudinary.v2.uploader.upload(req.body.avatar, {
+        const result = await cloudinary.uploader.upload(req.body.avatar, {
           folder: "avatars",
           width: 150,
           crop: "scale",

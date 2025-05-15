@@ -21,10 +21,12 @@ app.use(cors({
   allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"]
 }));
 
-app.use(express.json());
+// ✅ Increase payload limit to avoid "request entity too large" error
+app.use(express.json({ limit: "10mb" }));
 app.use(cookieParser());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ limit: "10mb", extended: true }));
 app.use(fileUpload());
+
 
 // Route Imports
 const product = require("../routes/productRoute");
