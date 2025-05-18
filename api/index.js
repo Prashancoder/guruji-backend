@@ -34,12 +34,14 @@ const user = require("../routes/userRoute");
 const order = require("../routes/orderRoute");
 const payment = require("../routes/paymentRoute");
 const service = require("../routes/serviceRoute");
+const contact = require("../routes/contact");
 
 app.use("/api/v1", product);
 app.use("/api/v1", user);
 app.use("/api/v1", order);
 app.use("/api/v1", payment);
 app.use("/api/v1", service);
+app.use("/api/v1", contact);
 
 // Middleware for Errors
 app.use(errorMiddleware);
