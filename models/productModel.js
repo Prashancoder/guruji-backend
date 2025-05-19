@@ -33,7 +33,16 @@ const productSchema = mongoose.Schema({
   ],
   category: {
     type: String,
-    required: false,
+    required: [true, "Please select a category"],
+    enum: {
+      values: [
+        "Education eBook",
+        "eBook and Manual Book",
+        "Vastu Product",
+        "Numerology Product"
+      ],
+      message: "Please select a valid category"
+    }
   },
   Stock: {
     type: Number,
