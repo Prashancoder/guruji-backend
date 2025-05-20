@@ -35,6 +35,8 @@ const order = require("../routes/orderRoute");
 const payment = require("../routes/paymentRoute");
 const service = require("../routes/serviceRoute");
 const contact = require("../routes/contact");
+const appointment = require("../routes/appointmentRoutes");
+
 
 app.use("/api/v1", product);
 app.use("/api/v1", user);
@@ -42,7 +44,7 @@ app.use("/api/v1", order);
 app.use("/api/v1", payment);
 app.use("/api/v1", service);
 app.use("/api/v1", contact);
-
+app.use("/api/v1", appointment);
 // Middleware for Errors
 app.use(errorMiddleware);
 
