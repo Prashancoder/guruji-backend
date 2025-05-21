@@ -99,8 +99,26 @@ exports.updatePaymentStatus = catchAsyncErrors(async (req, res, next) => {
 exports.getAvailableTimeSlots = catchAsyncErrors(async (req, res, next) => {
   const { date } = req.query;
   
+  if (!date) {
+    return next(new ErrorHandler("Date is required", 400));
+  }
+
+  // Validate date format
+  const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+  if (!dateRegex.test(date)) {
+    return next(new ErrorHandler("Invalid date format. Use YYYY-MM-DD", 400));
+  }
+
+  // Convert date string to Date object
+  const selectedDate = new Date(date);
+  
+  // Check if date is valid
+  if (isNaN(selectedDate.getTime())) {
+    return next(new ErrorHandler("Invalid date", 400));
+  }
+
   const bookedSlots = await Appointment.find({
-    date: date,
+    date: selectedDate,
     status: { $ne: "Cancelled" }
   }).select("time");
 

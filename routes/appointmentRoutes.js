@@ -12,10 +12,13 @@ const {
 
 const { isAuthenticatedUser, authorizeRoles } = require("../middleware/auth");
 
+// Public routes
+router.route("/appointment/slots").get(getAvailableTimeSlots);
+
+// Protected routes
 router.route("/appointment/new").post(isAuthenticatedUser, createAppointment);
 router.route("/appointment/:id").get(isAuthenticatedUser, getSingleAppointment);
 router.route("/appointments/me").get(isAuthenticatedUser, myAppointments);
-router.route("/appointment/slots").get(getAvailableTimeSlots);
 
 // Admin routes
 router
