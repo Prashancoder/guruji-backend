@@ -9,9 +9,20 @@ const errorMiddleware = require("../middleware/error");
 const connectDatabase = require("../config/database");
 const dotenv = require("dotenv");
 
+// app.use(express.urlencoded({extended:true}))
+
 dotenv.config();
 
 connectDatabase();
+
+
+
+
+
+
+
+
+
 
 // ✅ Enable CORS for frontend
 app.use(cors({
