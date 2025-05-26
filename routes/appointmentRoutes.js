@@ -8,6 +8,7 @@ const {
   updateAppointmentStatus,
   updatePaymentStatus,
   getAvailableTimeSlots,
+  deleteAppointment,
 } = require("../controllers/appointmentController");
 
 const { isAuthenticatedUser, authorizeRoles } = require("../middleware/auth");
@@ -27,7 +28,8 @@ router
 
 router
   .route("/admin/appointment/:id")
-  .put(isAuthenticatedUser, authorizeRoles("admin"), updateAppointmentStatus);
+  .put(isAuthenticatedUser, authorizeRoles("admin"), updateAppointmentStatus)
+  .delete(isAuthenticatedUser, authorizeRoles("admin"), deleteAppointment);
 
 router
   .route("/admin/appointment/payment/:id")
