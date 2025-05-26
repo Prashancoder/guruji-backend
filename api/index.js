@@ -17,7 +17,7 @@ connectDatabase();
 
 // ✅ Enable CORS for frontend
 app.use(cors({
-  origin: "http://localhost:3000, https://www.absolutenumberoastroservice.com/",           // <- This will reflect the request origin dynamically
+  origin: "*",    
   credentials: true,      // <- Important if you are sending cookies or auth headers
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"]
