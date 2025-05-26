@@ -15,18 +15,9 @@ dotenv.config();
 
 connectDatabase();
 
-
-
-
-
-
-
-
-
-
 // ✅ Enable CORS for frontend
 app.use(cors({
-  origin: true,           // <- This will reflect the request origin dynamically
+  origin: "*",           // <- This will reflect the request origin dynamically
   credentials: true,      // <- Important if you are sending cookies or auth headers
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"]
