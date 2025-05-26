@@ -15,9 +15,10 @@ dotenv.config();
 
 connectDatabase();
 
+
 // ✅ Enable CORS for frontend
 app.use(cors({
-  origin: "*",    
+  origin: "https://www.absolutenumberoastroservice.com",    
   credentials: true,      // <- Important if you are sending cookies or auth headers
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"]
