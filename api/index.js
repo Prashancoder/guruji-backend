@@ -14,7 +14,7 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 connectDatabase();
-
+// nn
 
 // ✅ Enable CORS for frontend
 app.use(cors({
