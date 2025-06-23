@@ -134,20 +134,4 @@ exports.getAvailableTimeSlots = catchAsyncErrors(async (req, res, next) => {
     success: true,
     availableSlots,
   });
-});
-
-// Delete Appointment -- Admin
-exports.deleteAppointment = catchAsyncErrors(async (req, res, next) => {
-  const appointment = await Appointment.findById(req.params.id);
-
-  if (!appointment) {
-    return next(new ErrorHandler("Appointment not found with this Id", 404));
-  }
-
-  await appointment.deleteOne();
-
-  res.status(200).json({
-    success: true,
-    message: "Appointment Deleted Successfully",
-  });
 }); 
