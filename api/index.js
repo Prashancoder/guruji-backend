@@ -18,7 +18,7 @@ connectDatabase();
 
 // ✅ Enable CORS for frontend
 app.use(cors({
-  origin: "https://guruji-frontend.vercel.app",
+  origin: "https://front2-orcin.vercel.app",
   credentials: true,      // <- Important if you are sending cookies or auth headers
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"]
