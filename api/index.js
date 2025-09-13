@@ -8,7 +8,6 @@ const path = require("path");
 const errorMiddleware = require("../middleware/error");
 const connectDatabase = require("../config/database");
 const dotenv = require("dotenv");
-const helmet = require("helmet");   // ✅ Added
 
 dotenv.config();
 
@@ -21,38 +20,12 @@ app.use(cors({
   allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"]
 }));
 
-// ✅ Razorpay CSP fix
-app.use(
-  helmet.contentSecurityPolicy({
-    useDefaults: true,
-    directives: {
-      "default-src": ["'self'"],
-      "script-src": [
-        "'self'",
-        "'unsafe-eval'",
-        "'unsafe-inline'",
-        "https://checkout.razorpay.com"
-      ],
-      "frame-src": [
-        "'self'",
-        "https://api.razorpay.com",
-        "https://checkout.razorpay.com"
-      ],
-      "connect-src": [
-        "'self'",
-        "https://api.razorpay.com"
-      ],
-      "img-src": ["'self'", "data:", "https://*"],
-      "style-src": ["'self'", "'unsafe-inline'", "https://*"]
-    },
-  })
-);
 
 // Body parsers
 app.use(express.json({ limit: "10mb" }));
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ limit: "10mb", extended: true }));
-app.use(fileUpload());
+app.use(fileUpload())
 
 // Routes
 const product = require("../routes/productRoute");
